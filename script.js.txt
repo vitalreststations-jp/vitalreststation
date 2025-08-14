@@ -1,0 +1,20 @@
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+async function loadGallery() {
+  try {
+    const res = await fetch("gallery/manifest.json");
+    const files = await res.json();
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    files.forEach(name => {
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.alt = name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ");
+      img.src = `gallery/${name}`;
+      grid.appendChild(img);
+    });
+  } catch (e) {
+    console.error("Gallery load failed", e);
+  }
+}
+loadGallery();
